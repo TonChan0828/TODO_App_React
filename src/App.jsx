@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import "./styles.css";
+import { InputTodo } from "./components/inputTodo.jsx";
+import { IncompleteTodos } from "./components/IncompleteTodos.jsx";
+import { CompleteTodos } from "./components/CompleteTodos.jsx";
 
 export const App = () => {
   const [todoText, setTodoText] = useState("");
-  const [incompleteTodos, setIncompleteTodos] = useState(["aaa", "bbb"]);
-  const [completeTodos, setCompleteTodos] = useState(["ccc"]);
+  const [incompleteTodos, setIncompleteTodos] = useState([]);
+  const [completeTodos, setCompleteTodos] = useState([]);
 
   //入力値を取得
   const onChangeTodoText = (event) => setTodoText(event.target.value);
@@ -44,47 +47,19 @@ export const App = () => {
 
   return (
     <>
-      <div className="input-area">
-        <input
-          placeholder="TODOを入力"
-          value={todoText}
-          onChange={onChangeTodoText}
-        />
-        <button onClick={onClickAdd}>追加</button>
-      </div>
+      <InputTodo
+        todoText={todoText}
+        onChange={onChangeTodoText}
+        onClick={onClickAdd}
+      />
 
-      <div className="incomplete-area">
-        <p className="title">未完了のTODO</p>
-        <ul>
-          {incompleteTodos.map((todo, index) => {
-            return (
-              <li key={todo}>
-                <div className="list-row">
-                  <p>{todo}</p>
-                  <button onClick={() => onClickComplete(index)}>完了</button>
-                  <button onClick={() => onClickDelete(index)}>削除</button>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      <IncompleteTodos
+        todos={incompleteTodos}
+        onClickComplete={onClickComplete}
+        onClickDelete={onClickDelete}
+      />
 
-      <div className="complete-area">
-        <p className="title">完了したTODO</p>
-        <ul>
-          {completeTodos.map((todo, index) => {
-            return (
-              <li key={todo}>
-                <div className="list-row">
-                  <p>{todo}</p>
-                  <button onClick={() => onClickBack(index)}>戻す</button>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      <CompleteTodos todos={completeTodos} onClickBack={onClickBack} />
     </>
   );
 };
