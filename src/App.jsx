@@ -6,12 +6,22 @@ export const App = () => {
   const [incompleteTodos, setIncompleteTodos] = useState(["aaa", "bbb"]);
   const [completeTodos, setCompleteTodos] = useState(["ccc"]);
 
+  //入力値を取得
   const onChangeTodoText = (event) => setTodoText(event.target.value);
+  // 追加ボタンの機能
   const onClickAdd = () => {
     if (todoText === "") return;
+    // 新規TODOを既存TODOの後ろに追加
     const newTodos = [...incompleteTodos, todoText];
     setIncompleteTodos(newTodos);
     setTodoText("");
+  };
+
+  // 削除ボタンの機能
+  const onClickDelete = (index) => {
+    const newTodos = [...incompleteTodos];
+    newTodos.splice(index, 1);
+    setIncompleteTodos(newTodos);
   };
 
   return (
@@ -28,13 +38,13 @@ export const App = () => {
       <div className="incomplete-area">
         <p className="title">未完了のTODO</p>
         <ul>
-          {incompleteTodos.map((todo) => {
+          {incompleteTodos.map((todo, index) => {
             return (
               <li key={todo}>
                 <div className="list-row">
                   <p>{todo}</p>
                   <button>完了</button>
-                  <button>削除</button>
+                  <button onClick={() => onClickDelete(index)}>削除</button>
                 </div>
               </li>
             );
@@ -45,7 +55,7 @@ export const App = () => {
       <div className="complete-area">
         <p className="title">完了したTODO</p>
         <ul>
-          {completeTodos.map((todo) => {
+          {completeTodos.map((todo, index) => {
             return (
               <li key={todo}>
                 <div className="list-row">
